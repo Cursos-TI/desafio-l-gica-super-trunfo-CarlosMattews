@@ -44,52 +44,86 @@ void cadastrarCarta(Carta *carta) {
 }
 
 // Função para comparar cartas com base em um atributo específico
+// strcmp compara duas strings
 void compararCartas(Carta carta1, Carta carta2, char *atributo) {
     printf("\nComparação de cartas:\n");
-    printf("Carta 1 - Estado: %s, Código: %s, População: %d\n", carta1.estado, carta1.codigo, carta1.populacao);
-    printf("Carta 2 - Estado: %s, Código: %s, População: %d\n", carta2.estado, carta2.codigo, carta2.populacao);
+    printf("Carta 1 - Estado: %s, Código: %s, Nome: %s, População: %d, Área: %.2f, PIB: %.2f, Pontos Turísticos: %d\n",
+           carta1.estado, carta1.codigo, carta1.nome, carta1.populacao, carta1.area, carta1.PIB, carta1.pontos_turisticos);
+    printf("Carta 2 - Estado: %s, Código: %s, Nome: %s, População: %d, Área: %.2f, PIB: %.2f, Pontos Turísticos: %d\n",
+           carta2.estado, carta2.codigo, carta2.nome, carta2.populacao, carta2.area, carta2.PIB, carta2.pontos_turisticos);
 
     if (strcmp(atributo, "populacao") == 0) {
+        printf("\nAtributo usado na comparação: População\n");
         if (carta1.populacao > carta2.populacao) {
             printf("Resultado: Carta 1 é a vencedora!\n");
-        } else {
+        } else if (carta1.populacao < carta2.populacao) {
             printf("Resultado: Carta 2 é a vencedora!\n");
+        } else {
+            printf("Empate!\n");
         }
     } else if (strcmp(atributo, "area") == 0) {
+        printf("\nAtributo usado na comparação: Área\n");
         if (carta1.area > carta2.area) {
             printf("Resultado: Carta 1 é a vencedora!\n");
-        } else {
+        } else if (carta1.area < carta2.area) {
             printf("Resultado: Carta 2 é a vencedora!\n");
+        } else {
+            printf("Empate!\n");
         }
     } else if (strcmp(atributo, "PIB") == 0) {
+        printf("\nAtributo usado na comparação: PIB\n");
         if (carta1.PIB > carta2.PIB) {
             printf("Resultado: Carta 1 é a vencedora!\n");
-        } else {
+        } else if (carta1.PIB < carta2.PIB) {
             printf("Resultado: Carta 2 é a vencedora!\n");
+        } else {
+            printf("Empate!\n");
         }
     } else if (strcmp(atributo, "densidade_populacional") == 0) {
+        printf("\nAtributo usado na comparação: Densidade Populacional\n");
         float densidade1 = carta1.populacao / carta1.area;
         float densidade2 = carta2.populacao / carta2.area;
         if (densidade1 < densidade2) {
             printf("Resultado: Carta 1 é a vencedora!\n");
-        } else {
+        } else if (densidade1 > densidade2) {
             printf("Resultado: Carta 2 é a vencedora!\n");
+        } else {
+            printf("Empate!\n");
         }
     } else if (strcmp(atributo, "PIB_per_capita") == 0) {
+        printf("\nAtributo usado na comparação: PIB per Capita\n");
         float PIB_per_capita1 = carta1.PIB / carta1.populacao;
         float PIB_per_capita2 = carta2.PIB / carta2.populacao;
         if (PIB_per_capita1 > PIB_per_capita2) {
             printf("Resultado: Carta 1 é a vencedora!\n");
-        } else {
+        } else if (PIB_per_capita1 < PIB_per_capita2) {
             printf("Resultado: Carta 2 é a vencedora!\n");
+        } else {
+            printf("Empate!\n");
         }
     } else {
         printf("Atributo inválido!\n");
     }
 }
 
+// Função para exibir o menu e obter a escolha do usuário
+int menu() {
+    int opcao;
+    printf("\nMenu de Comparação de Cartas:\n");
+    printf("1. População\n");
+    printf("2. Área\n");
+    printf("3. PIB\n");
+    printf("4. Densidade Populacional\n");
+    printf("5. PIB per Capita\n");
+    printf("Escolha uma opção: ");
+    scanf("%d", &opcao);
+    getchar(); // Consome o caractere de nova linha deixado pelo scanf
+    return opcao;
+}
+
 int main() {
     Carta carta1, carta2;
+    int opcao;
     char atributo[50];
 
     printf("Cadastro da Carta 1:\n");
@@ -98,8 +132,30 @@ int main() {
     printf("\nCadastro da Carta 2:\n");
     cadastrarCarta(&carta2);
 
-    printf("\nDigite o atributo para comparação (populacao, area, PIB, densidade_populacional, PIB_per_capita): ");
-    scanf("%s", atributo);
+    opcao = menu();
+
+    // Define o atributo de comparação com base na opção do menu
+    switch (opcao) {
+        case 1:
+        // strcpy copia uma string para outra
+            strcpy(atributo, "populacao");
+            break;
+        case 2:
+            strcpy(atributo, "area");
+            break;
+        case 3:
+            strcpy(atributo, "PIB");
+            break;
+        case 4:
+            strcpy(atributo, "densidade_populacional");
+            break;
+        case 5:
+            strcpy(atributo, "PIB_per_capita");
+            break;
+        default:
+            printf("Opção inválida!\n");
+            return 1;
+    }
 
     compararCartas(carta1, carta2, atributo);
 
